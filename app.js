@@ -7,19 +7,19 @@ const app = new Koa();
 
 const index = require('./controllers/index');
 
-app.use(index.routes())
-app.use(index.allowedMethods())
-
-
-
 // Logger
-app.use(logger())
+app.use(logger());
+
+
+app.use(index.routes());
+app.use(index.allowedMethods());
+
+
 
 // Compress
 app.use((ctx, next) => {
-  ctx.compress = true
-  ctx.body = fs.createReadStream(file)
-})
+  ctx.compress = true;
+});
 
 if (!module.parent) {
   app.listen(3000);
