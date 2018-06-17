@@ -9,10 +9,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "co-body": "^4.0.0",
     "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
     "koa-compress": "^3.0.0",
     "koa-logger": "^3.2.0",
+    "koa-multer": "^1.0.2",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.3"
   },
