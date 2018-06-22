@@ -1,22 +1,24 @@
-
-'use strict';
-
 const compress = require('koa-compress');
 const logger = require('koa-logger');
 const Koa = require('koa');
+const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
-const index = require('./controllers/index');
+const path = require('path');
+const index = require('./routes/index');
 const app = new Koa();
 
 
 app.use(bodyParser());
 app.use(logger());
+app.use(static(__dirname));
+
 
 //centralized error
 app.use(async (ctx, next) => {
     try {
         await next();
     } catch (err) {
+        console.log("error occured!")
         ctx.status = err.status || 500;
         ctx.body = err.message;
         ctx.app.emit('error', err, ctx);

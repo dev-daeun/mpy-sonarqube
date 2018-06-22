@@ -1,33 +1,57 @@
-const Router = require('koa-router');
-const router = new Router();
-const multer = require('koa-multer');
-const upload = multer({
-    dest: '../mpy-projects/'
-});
+const $ = require('shelljs');
+const path = require('path');
 
-
-//upload 에러는 centralized error에서 처리됨
-router.post('/project', upload.single('file'), async (ctx, next)=>{
+//파일업로드 & 소나스캔 처리
+async function scanFile(ctx, next){
    try{
-       //파일업로드 & 소나스캔 처리하는 미들웨어
-       next();
-   }catch(err){
-       ctx.throw(500, new Error('sonar scan error'));
-   }
-});
 
-router.use(async(ctx, next)=>{
-    //postgreSQL에서 스캔결과 가져오고 응답하는 미들웨어
+    let file = ctx.req.file.filename;
+    let fid = ctx.req.file.originalname.split('.')[0];
+    let filesPath = path.join(__dirname, '..', '/files/');
+
+    $.cd(filesPath);
+    $.exec('tar -xzvf '+file);
+    $.touch(filesPath+fid+'/sonar-project.properties');
+    $.exec('echo '
+        +      '\'sonar.projectKey='+fid+'\n'
+        +        'sonar.projectName='+fid+'\n'
+        +        'sonar.projectVersion=1.0\n'
+        +        'sonar.sources=.\n'
+        +        'sonar.java.binaries=./target\n'
+        +        '\n'
+        +        'sonar.sourceEncoding=UTF-8\n\''
+        + '> '
+        +  filesPath+fid+'/'
+        +  'sonar-project.properties');
+    $.cd(filesPath+fid);
+    $.exec('sonar-scanner -X');
+    $.rm('-rf', filesPath + fid);
+    $.rm(filesPath + file);
+
+
+
+   }catch(err){
+       ctx.throw(500, new Error('SonarScanError :' +err.message));
+   }
+}
+
+
+//postgreSQL에서 스캔결과 조회
+async function selectResult(ctx){
     try{
 
+
     }catch(err){
-        ctx.throw(500, new Error('select result error'));
+        ctx.throw(500, new Error('SelectResultError :'+err.message));
     }
-});
+}
 
 
 
-module.exports = router;
+module.exports = {
+    scanFile,
+    selectResult
+};
 
 
 
