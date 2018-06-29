@@ -1,0 +1,3 @@
+SELECT *
+FROM issues
+WHERE id = 124

@@ -1,4 +1,4 @@
-const Ctrl = require('../controllers/index');
+const Ctrl = require('../controllers/code');
 const Router = require('koa-router');
 const router = new Router();
 const upload = require('../utils/FileUploader');

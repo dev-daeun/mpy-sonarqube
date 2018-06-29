@@ -4,7 +4,7 @@ const Koa = require('koa');
 const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
 const path = require('path');
-const index = require('./routes/index');
+const index = require('./routes/code');
 const app = new Koa();
 
 
@@ -18,7 +18,6 @@ app.use(async (ctx, next) => {
     try {
         await next();
     } catch (err) {
-        console.log("error occured!")
         ctx.status = err.status || 500;
         ctx.body = err.message;
         ctx.app.emit('error', err, ctx);

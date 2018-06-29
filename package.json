@@ -9,6 +9,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "crypto": "^1.0.1",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
@@ -18,7 +19,11 @@
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.3",
     "path": "^0.12.7",
-    "shelljs": "^0.8.2",
+    "pg": "^7.4.3",
+    "pg-monitor": "^1.0.0",
+    "pg-pool": "^2.0.3",
+    "pg-promise": "^8.4.4",
+    "shelljs": "^0.8.2"
   },
   "devDependencies": {
     "jsdoc": "^3.5.5",
