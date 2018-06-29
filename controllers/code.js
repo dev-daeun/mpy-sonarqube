@@ -1,6 +1,6 @@
 const $ = require('shelljs');
 const path = require('path');
-
+const db = require('../utils/database');
 
 
 async function responseToPostCode(ctx, next){
@@ -43,7 +43,7 @@ async function scanFile(ctx, next){
     $.rm('-rf', filesPath + fid);
     $.rm(filesPath + file);
 
-
+    await next();
 
    }catch(err){
        ctx.throw(500, new Error('SonarScanError :' +err.message));
@@ -51,15 +51,6 @@ async function scanFile(ctx, next){
 }
 
 
-//postgreSQL에서 스캔결과 조회
-async function selectResult(ctx){
-    try{
-
-
-    }catch(err){
-        ctx.throw(500, new Error('SelectResultError :'+err.message));
-    }
-}
 
 
 //postgreSQL에서 스캔결과 조회

@@ -5,7 +5,7 @@ const upload = require('../utils/FileUploader');
 
 
 //upload 에러는 centralized error에서 처리됨
-router.post('/code', upload.single('file'), Ctrl.scanFile);
+router.post('/code', upload.single('file'), Ctrl.responseToPostCode, Ctrl.scanFile, Ctrl.selectResult);
 
 
 module.exports = router;
