@@ -11,6 +11,14 @@ function sql(file) {
 module.exports = {
     issue: {
         find: sql('issue/find.sql')
+    },
+    user: {
+        find: sql('user/find.sql'),
+        create: sql('user/create.sql')
+    },
+    organization: {
+        find: sql('organization/find.sql'),
+        create: sql('organization/create.sql')
     }
 
 };
