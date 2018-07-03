@@ -3,18 +3,6 @@ const path = require('path');
 const db = require('../utils/database');
 
 
-async function responseToPostCode(ctx, next){
-    try{
-
-        await next();
-        ctx.response.status = 201;
-        ctx.response.body = ctx.body;
-
-    }catch(err){
-        ctx.throw(500, new Error("ResponseError : "+err.message));
-    }
-}
-
 
 //파일업로드 & 소나스캔 처리
 async function scanFile(ctx, next){
@@ -54,7 +42,7 @@ async function scanFile(ctx, next){
 
 
 //postgreSQL에서 스캔결과 조회
-async function selectResult(ctx, next){
+async function getResult(ctx, next){
     try{
         let Issue = db.issue;
         let messages = await Issue.select();
@@ -70,9 +58,8 @@ async function selectResult(ctx, next){
 
 
 module.exports = {
-    responseToPostCode,
     scanFile,
-    selectResult
+    getResult
 };
 
 
