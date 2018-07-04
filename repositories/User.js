@@ -7,13 +7,15 @@ class UserRepository{
         this.pgp = pgp;
     }
 
-    async select(){
+    async find(userEmail){
 
-        return await this.db.any(sql.user.find);
+        return await this.db.any(sql.user.find, {
+            userEmail: userEmail
+        });
 
     }
 
-    async insert(){
+    async create(){
 
         return await this.db.any(sql.user.create);
 
