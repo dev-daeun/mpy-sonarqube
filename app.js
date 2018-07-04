@@ -3,15 +3,32 @@ const logger = require('koa-logger');
 const Koa = require('koa');
 const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
-const path = require('path');
-const index = require('./routes/code');
+const user = require('./routes/user');
+const code = require('./routes/code');
 const app = new Koa();
 
 
-app.use(bodyParser());
+app.use(bodyParser({
+    enableTypes: ['json', 'multipart/form-data'],
+    jsonLimit: '256kb',
+    formLimit: '256kb',
+    extendTypes: {
+        json: ['application/json']
+    },
+    onerror: (err, ctx) => {
+        ctx.throw('BodyParsingError', 422);
+    }
+
+
+}));
 app.use(logger());
 app.use(static(__dirname));
 
+// Compress
+app.use(async (ctx, next) => {
+    ctx.compress = true;
+    await next();
+});
 
 //centralized error
 app.use(async (ctx, next) => {
@@ -23,17 +40,14 @@ app.use(async (ctx, next) => {
         ctx.app.emit('error', err, ctx);
     }
 });
-app.use(index.routes());
-app.use(index.allowedMethods());
 
-
-
-// Compress
-app.use((ctx, next) => {
-  ctx.compress = true;
-});
+app.use(user.routes());
+app.use(user.allowedMethods());
+app.use(code.routes());
+app.use(code.allowedMethods());
 
 if (!module.parent) {
   app.listen(6260);
   console.log('listening on port 6260');
 }
+
