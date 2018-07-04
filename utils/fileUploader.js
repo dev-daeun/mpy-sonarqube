@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const crypto = require("./crypto");
 const multer = require('koa-multer');
 const path = require('path');
 const upload = multer({
@@ -7,9 +7,7 @@ const upload = multer({
             cb(null, path.join(__dirname, '..', '/files/'));
         },
         filename: function(req, file, cb) {
-            crypto.pseudoRandomBytes(16, function(err, raw) {
-                cb(null, raw.toString('hex') + Date.now() + '.' + file.originalname);
-            });
+            cb(null, crypto.getRandomString(16) + Date.now() + '.' + file.originalname);
         }
     })
 
