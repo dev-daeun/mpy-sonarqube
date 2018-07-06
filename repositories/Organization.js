@@ -7,15 +7,17 @@ class OrganizationRepository{
         this.pgp = pgp;
     }
 
-    async select(){
+    async find(){
 
         return await this.db.any(sql.organization.find);
 
     }
 
-    async insert(){
-
-        return await this.db.any(sql.organization.create);
+    async create(orgMessage, t){
+        if(t)
+            return t.none(sql.organization.create, orgMessage);
+        else
+            return await this.db.any(sql.organization.create, orgMessage);
 
     }
 }

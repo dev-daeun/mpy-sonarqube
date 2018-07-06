@@ -15,9 +15,11 @@ class UserRepository{
 
     }
 
-    async create(){
-
-        return await this.db.any(sql.user.create);
+    async create(userMessage, t){
+    if(t)
+       return t.none(sql.user.create, userMessage);
+    else
+       return await this.db.any(sql.user.create, userMessage);
 
     }
 }

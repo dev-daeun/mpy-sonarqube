@@ -7,7 +7,7 @@ async function post(ctx, next){
         ctx.response.body = ctx.body;
 
     }catch(err){
-        ctx.throw(500, new Error("ResponseError : "+err.message));
+        ctx.throw(500, err);
     }
 }
 

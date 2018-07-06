@@ -2,11 +2,13 @@ const dbConfig = require('../configs/postgresql');
 const promise = require('bluebird');
 const Issue = require('../repositories/Issue');
 const User = require('../repositories/User');
+const Organization = require('../repositories/Organization');
 const initOptions = {
     promiseLib: promise,
     extend(obj, dc) {
         obj.issue = new Issue(obj, pgp);
         obj.user = new User(obj, pgp);
+        obj.organization = new Organization(obj, pgp);
     },
     disconnect(client, dc) {
         const cp = client.connectionParameters;

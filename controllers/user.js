@@ -1,8 +1,11 @@
-const provider = require('../configs/provider');
+const field = require('../configs/field');
 const crypto = require('../utils/crypto');
 const db = require('../utils/database');
 const sql = require('../sqls/queryFile');
+const uniqid = require('uniqid');
 const pgp = require('pg-promise');
+
+
 const TransactionMode = pgp.txMode.TransactionMode;
 const isolationLevel = pgp.txMode.isolationLevel;
 const modes = new TransactionMode({
@@ -14,19 +17,34 @@ const modes = new TransactionMode({
 async function enrollUser(ctx, next){
     try{
 
-        let crypted = crypto.hashData(ctx.request.body.password),
+        let date = Date.now();
+        let crypted = await crypto.hashData(ctx.request.body.password),
             userMessage = {
-            login: ctx.request.body.username,
-            username: ctx.request.body.username,
-            email: ctx.request.body.email,
-            cryptedPassword: crypted.hashedData,
-            extIdProvider: provider.key,
-            salt: crypted.salt
-        };
+                login: ctx.request.body.username,
+                username: ctx.request.body.username,
+                email: ctx.request.body.email,
+                cryptedPassword: crypted.hashedData,
+                extIdProvider: field.extIdProvider,
+                salt: crypted.salt,
+                createdAt: date,
+                updatedAt: date
+            },
+            orgMessage = {
+                uuid: uniqid(field.orgUidprefix),
+                kee: ctx.request.body.username + field.orgDefaultKee ,
+                name: ctx.request.body.username,
+                createdAt: date,
+                updatedAt: date
+            };
+
+        let UserRepo = db.user,
+            OrgRepo = db.organization;
+
         await db.tx({modes}, async t => {
             try{
-                const userQuery = t.query(sql.user.create, userMessage);
-                await t.batch([userQuery]);
+                const userQuery = UserRepo.create(userMessage, t);
+                const orgQuery = OrgRepo.create(orgMessage, t);
+                await t.batch([userQuery, orgQuery]);
             }catch(err){
                 throw err;
             }

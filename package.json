@@ -23,7 +23,8 @@
     "pg-monitor": "^1.0.0",
     "pg-pool": "^2.0.3",
     "pg-promise": "^8.4.4",
-    "shelljs": "^0.8.2"
+    "shelljs": "^0.8.2",
+    "uniqid": "^5.0.3"
   },
   "devDependencies": {
     "jsdoc": "^3.5.5",
