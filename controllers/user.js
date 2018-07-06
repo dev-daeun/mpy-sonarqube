@@ -1,7 +1,6 @@
 const field = require('../configs/field');
 const crypto = require('../utils/crypto');
 const db = require('../utils/database');
-const sql = require('../sqls/queryFile');
 const uniqid = require('uniqid');
 const pgp = require('pg-promise');
 
@@ -16,9 +15,8 @@ const modes = new TransactionMode({
 
 async function enrollUser(ctx, next){
     try{
-
-        let date = Date.now();
-        let crypted = await crypto.hashData(ctx.request.body.password),
+        let date = Date.now(),
+            crypted = await crypto.hashData(ctx.request.body.password),
             userMessage = {
                 login: ctx.request.body.username,
                 username: ctx.request.body.username,
@@ -48,7 +46,6 @@ async function enrollUser(ctx, next){
             }catch(err){
                 throw err;
             }
-
         });
 
         await next();
