@@ -3,8 +3,11 @@ const logger = require('koa-logger');
 const Koa = require('koa');
 const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
+const jwt = require('koa-jwt');
 const user = require('./routes/user');
-const code = require('./routes/code');
+const code = require('./routes/issue');
+const db = require('./utils/database');
+const authConfig = require('./configs/auth.js');
 const app = new Koa();
 
 
@@ -24,9 +27,10 @@ app.use(bodyParser({
 app.use(logger());
 app.use(static(__dirname));
 
-// Compress
+
 app.use(async (ctx, next) => {
     ctx.compress = true;
+    ctx.state.db = db;
     await next();
 });
 
@@ -41,8 +45,12 @@ app.use(async (ctx, next) => {
     }
 });
 
+
 app.use(user.routes());
 app.use(user.allowedMethods());
+
+// app.use(jwt({ secret: authConfig.jwtKey }));
+
 app.use(code.routes());
 app.use(code.allowedMethods());
 

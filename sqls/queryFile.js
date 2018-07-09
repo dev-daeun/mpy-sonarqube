@@ -19,6 +19,9 @@ module.exports = {
     organization: {
         find: sql('organization/find.sql'),
         create: sql('organization/create.sql')
+    },
+    usertoken: {
+        create: sql('usertoken/create.sql')
     }
 
 };

@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 function getRandomString(length){
     return new Promise((resolve, reject) => {
-        crypto.randomBytes(Math.ceil(length/2), (err, buf) => {
+        crypto.randomBytes(Math.ceil(length), (err, buf) => {
             if(err)
                 reject(err);
             else
@@ -11,7 +11,7 @@ function getRandomString(length){
     });
 }
 
-async function hashData(rawData){
+async function hashDataWithSalt(rawData, alorithm){
     try{
         let salt = await getRandomString(32);
         let hash = crypto.createHmac('sha256', salt);
@@ -26,8 +26,17 @@ async function hashData(rawData){
     }
 }
 
+function hashData(rawData){
+        let hash = crypto.createHash('sha384');
+        hash.update(rawData);
+        let hashedData = hash.digest('hex');
+        return hashedData;
+
+}
+
 
 module.exports = {
     getRandomString,
-    hashData
+    hashData,
+    hashDataWithSalt
 };

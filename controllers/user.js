@@ -1,23 +1,12 @@
 const field = require('../configs/field');
 const crypto = require('../utils/crypto');
-const db = require('../utils/database');
-const uniqid = require('uniqid');
-const pgp = require('pg-promise');
 
 
-const TransactionMode = pgp.txMode.TransactionMode;
-const isolationLevel = pgp.txMode.isolationLevel;
-const modes = new TransactionMode({
-    tiLevel: isolationLevel.serializable,
-    readOnly: true,
-    deferrable: true
-});
-
-async function enrollUser(ctx, next){
+async function create(ctx, next){
     try{
         let date = Date.now(),
-            crypted = await crypto.hashData(ctx.request.body.password),
-            userMessage = {
+            crypted = await crypto.hashDataWithSalt(ctx.request.body.password),
+            message = {
                 login: ctx.request.body.username,
                 username: ctx.request.body.username,
                 email: ctx.request.body.email,
@@ -26,37 +15,22 @@ async function enrollUser(ctx, next){
                 salt: crypted.salt,
                 createdAt: date,
                 updatedAt: date
-            },
-            orgMessage = {
-                uuid: uniqid(field.orgUidprefix),
-                kee: ctx.request.body.username + field.orgDefaultKee ,
-                name: ctx.request.body.username,
-                createdAt: date,
-                updatedAt: date
             };
-
-        let UserRepo = db.user,
-            OrgRepo = db.organization;
-
-        await db.tx({modes}, async t => {
-            try{
-                const userQuery = UserRepo.create(userMessage, t);
-                const orgQuery = OrgRepo.create(orgMessage, t);
-                await t.batch([userQuery, orgQuery]);
-            }catch(err){
-                throw err;
-            }
-        });
-
+        let user = ctx.state.db.user;
+        if(ctx.state.t){
+            let createUser = user.createInBatch(message, ctx.state.t);
+            ctx.state.list.push(createUser);
+        }
+        else await user.create(message);
         await next();
-
     }catch(err){
-        ctx.throw(500, new Error('enrollUserError :' +err.message));
+        ctx.throw(500, new Error('createUserError:' +err.message));
     }
 }
 
+
 module.exports = {
-    enrollUser
+    create
 };
 
 

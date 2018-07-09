@@ -7,12 +7,12 @@ class IssueRepository{
         this.pgp = pgp;
     }
 
-    async find(params, t){
-        if(t)
-            return t.query(sql.issue.find, params);
-        else
-            return await this.db.any(sql.issue.find, params);
+    findInBatch(params, t){
+        return t.query(sql.issue.find, params);
+    }
 
+    async find(params){
+        return await this.db.any(sql.issue.find, params);
     }
 }
 

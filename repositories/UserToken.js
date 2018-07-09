@@ -1,7 +1,7 @@
 const sql = require('../sqls/queryFile')
 
 
-class UserRepository{
+class UserTokenRepository{
     constructor(db, pgp){
         this.db = db;
         this.pgp = pgp;
@@ -9,12 +9,12 @@ class UserRepository{
 
 
     createInBatch(params, t){
-        return t.none(sql.user.create, params);
+        return t.none(sql.usertoken.create, params);
     }
 
     async create(params){
-        return await this.db.any(sql.user.create, params);
+        return await this.db.any(sql.usertoken.create, params);
     }
 }
 
-module.exports = UserRepository;
+module.exports = UserTokenRepository;
