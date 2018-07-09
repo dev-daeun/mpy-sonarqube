@@ -11,7 +11,6 @@ async function search(ctx, next){
 
         let IssueRepo = db.issue,
             searchIssue = await IssueRepo.find(message);
-            searchIssue = searchIssue.length > 0 ? searchIssue : 'clean';
         ctx.body = searchIssue;
 
         await next();
