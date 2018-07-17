@@ -1,8 +1,8 @@
 const dbConfig = require('../configs/postgresql');
-const Issue = require('../repositories/Issue');
-const User = require('../repositories/User');
-const Organization = require('../repositories/Organization');
-const UserToken = require('../repositories/UserToken');
+const Issue = require('../repositories/issue');
+const User = require('../repositories/user');
+const Organization = require('../repositories/organization');
+const UserToken = require('../repositories/userToken');
 
 const monitor = require('../monitor');
 
