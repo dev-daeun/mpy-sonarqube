@@ -4,8 +4,6 @@ const Koa = require('koa');
 const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
 const jwt = require('koa-jwt');
-const user = require('./routes/user');
-const code = require('./routes/issue');
 const db = require('./utils/database');
 const authConfig = require('./configs/auth.js');
 const app = new Koa();
@@ -46,13 +44,17 @@ app.use(async (ctx, next) => {
 });
 
 
-app.use(user.routes());
-app.use(user.allowedMethods());
+app.use(require('./routes/user').routes());
+app.use(require('./routes/user').allowedMethods());
 
 // app.use(jwt({ secret: authConfig.jwtKey }));
 
-app.use(code.routes());
-app.use(code.allowedMethods());
+app.use(require('./routes/issue').routes());
+app.use(require('./routes/issue').allowedMethods());
+
+
+app.use(require('./routes/rule').routes());
+app.use(require('./routes/rule').allowedMethods());
 
 if (!module.parent) {
   app.listen(6260);

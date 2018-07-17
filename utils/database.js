@@ -3,7 +3,7 @@ const Issue = require('../repositories/issue');
 const User = require('../repositories/user');
 const Organization = require('../repositories/organization');
 const UserToken = require('../repositories/userToken');
-
+const Rule = require('../repositories/rule');
 const monitor = require('../monitor');
 
 const initOptions = {
@@ -13,6 +13,7 @@ const initOptions = {
         obj.user = new User(obj, pgp);
         obj.organization = new Organization(obj, pgp);
         obj.usertoken = new UserToken(obj, pgp);
+        obj.rule = new Rule(obj, pgp);
     },
     disconnect(client, dc) {
         const cp = client.connectionParameters;

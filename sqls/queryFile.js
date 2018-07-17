@@ -22,6 +22,9 @@ module.exports = {
     },
     usertoken: {
         create: sql('usertoken/create.sql')
+    },
+    rule: {
+        create: sql('rule/create.sql')
     }
 
 };
