@@ -15,6 +15,14 @@ class UserTokenRepository{
     async create(params){
         return await this.db.any(sql.usertoken.create, params);
     }
+
+    findInBatch(params, t){
+        return t.query(sql.usertoken.find, params);
+    }
+
+    async find(params){
+        return await this.db.any(sql.usertoken.find, params);
+    }
 }
 
 module.exports = UserTokenRepository;

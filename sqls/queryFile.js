@@ -21,7 +21,8 @@ module.exports = {
         create: sql('organization/create.sql')
     },
     usertoken: {
-        create: sql('usertoken/create.sql')
+        find: sql('usertoken/find.sql'),
+        create: sql('usertoken/create.sql'),
     },
     rule: {
         create: sql('rule/create.sql')
