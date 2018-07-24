@@ -2,7 +2,7 @@ const dbConfig = require('../configs/postgresql');
 const Issue = require('../repositories/issue');
 const User = require('../repositories/user');
 const Organization = require('../repositories/organization');
-const UserToken = require('../repositories/userToken');
+const UserToken = require('../repositories/usertoken');
 const Rule = require('../repositories/rule');
 const monitor = require('../monitor');
 
@@ -14,9 +14,6 @@ const initOptions = {
         obj.organization = new Organization(obj, pgp);
         obj.usertoken = new UserToken(obj, pgp);
         obj.rule = new Rule(obj, pgp);
-    },
-    disconnect(client, dc) {
-        const cp = client.connectionParameters;
     },
     error(err, e) {
         monitor.error(err, e);
