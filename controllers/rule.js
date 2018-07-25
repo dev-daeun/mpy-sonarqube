@@ -1,34 +1,30 @@
-const plugMapper = require('../utils/pluginMapper');
+const plugin = require('../codes/rulePlugin');
 
 
-/*
-*
-*       "type": "XpathRule" <- [XpathRule, RegEx, disallow ] : rules.plugin_rule_key와 매핑됨.
-*       "name": "customRuleForReqeustTest",
-        "description": "this is for testing request",
-        "severity": 3,
-        "status": "READY",
-        "language": "py",
-        "purpose": 1 <- [code smell, vulnerability, bug ],
-        
+/**
+ * Rule controller.
+ * @module repositories/rule
+ */
 
-* */
 async function create(ctx, next){
 
     let date = Date.now();
     let message = {
-        type: ctx.request.body.type,
         name: ctx.request.body.name,
-        pluginName: plugMapper[ctx.request.body.language],
-        description: ctx.request.body.description,
-        severity: ctx.request.body.severity,
+        pluginRuleKey: ctx.request.body.name.split(' ').join('_'),
+        pluginName: plugin.rule[ctx.request.body.language],
+        description:  ctx.request.body.description,
+        priority: ctx.request.body.severity,
+        templateId: plugin.template[ctx.request.body.language],
         status: ctx.request.body.status,
         language: ctx.request.body.language,
-        purpose: ctx.request.body.purpose,
+        isTemplate: false,
+        descriptionFormat: 'MARKDOWN',
+        ruleType: ctx.request.body.ruleType,
+        pluginKey: plugin.plugin[ctx.request.body.language],
         createdAt: date,
         updatedAt: date
     };
-
     let rule = ctx.state.db.rule;
 
     if(ctx.state.t){
@@ -43,5 +39,14 @@ async function create(ctx, next){
 }
 
 module.exports = {
+    /**
+     * Blend two colors together.
+     * @param {string} color1 - The first color, in hexadecimal format.
+     * @param {string} color2 - The second color, in hexadecimal format.
+     * @return {string} The blended color.
+     */
     create
 };
+
+
+

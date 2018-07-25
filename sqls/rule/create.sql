@@ -18,17 +18,17 @@ INSERT INTO rules
             VALUES
             (
                         ${name},
-                        ${name},
+                        ${pluginRuleKey},
                         ${pluginName},
                         ${description},
-                        ${severity},
-                        44,
+                        ${priority},
+                        ${templateId},
                         ${status},
                         ${language},
-                        false,
-                        'MARKDOWN',
+                        ${isTemplate},
+                        ${descriptionFormat},
                         ${createdAt},
                         ${updatedAt},
-                        ${prevention},
-                        ${pluginName}
+                        ${ruleType},
+                        ${pluginKey}
             )
