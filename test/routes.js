@@ -13,9 +13,14 @@ describe('Routes', () => {
 
     before(async () => {
         await db.any('DELETE FROM rules \n' +
-                     'WHERE  id = (SELECT id \n' +
+                     'WHERE  Id = (SELECT Id \n' +
                      '             FROM   rules \n' +
-                     '             ORDER  BY id DESC \n' +
+                     '             ORDER  BY Id DESC \n' +
+                     '             LIMIT  1) ');
+        await db.any('DELETE FROM rules_profiles \n' +
+                     'WHERE  Id = (SELECT Id \n' +
+                     '             FROM   rules_profiles \n' +
+                     '             ORDER  BY Id DESC \n' +
                      '             LIMIT  1) ');
     });
 

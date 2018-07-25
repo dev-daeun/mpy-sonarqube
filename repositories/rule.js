@@ -15,6 +15,14 @@ class RuleRepository{
             return await this.db.any(sql.rule.create, params);
         }
 
+        createProfileInBatch(params, t){
+            return t.query(sql.rule.createProfile, params);
+        }
+
+        async createProfile(params){
+            return await this.db.any(sql.rule.createProfile, params);
+        }
+
 }
 
 module.exports = RuleRepository;

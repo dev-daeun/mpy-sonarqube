@@ -32,3 +32,4 @@ INSERT INTO rules
                         ${ruleType},
                         ${pluginKey}
             )
+RETURNING Id
