@@ -26,7 +26,8 @@ module.exports = {
     },
     rule: {
         create: sql('rule/create.sql'),
-        createProfile: sql('rule/createProfile.sql')
+        createProfile: sql('rule/createProfile.sql'),
+        createActive: sql('rule/createActive.sql')
     }
 
 };

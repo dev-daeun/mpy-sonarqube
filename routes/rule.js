@@ -6,6 +6,6 @@ const router = new Router();
 
 
 
-router.post('/rule', ResCtrl.post, tx.nestTrans, RuleCtrl.create, RuleCtrl.createProfile);
+router.post('/rule', ResCtrl.post, tx.execTrans, RuleCtrl.create);
 
 module.exports = router;
