@@ -5,11 +5,5 @@ INSERT INTO rules_parameters
                         param_type,
                         default_value
             )
-            VALUES
-            (
-                        ${ruleId},
-                        ${name},
-                        ${paramType},
-                        ${defaultValue}
-            )
+            VALUES ${formatted}
 RETURNING Id

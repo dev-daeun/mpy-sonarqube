@@ -1,4 +1,5 @@
 const sql = require('../sqls/queryFile')
+const ParamFormatter = require('./formatters/ruleParameter/insert');
 
 class RuleRepository{
 
@@ -24,15 +25,14 @@ class RuleRepository{
         }
 
         createParametersInBatch(params, t) {
-            return t.batch(params.map(p => {
-                return t.query(sql.rule.createParameter, p);
-            }));
+            let values = new ParamFormatter(this.pgp, '${ruleId}, ${name}, ${paramType}, ${defaultValue}', params);
+            return t.query(sql.rule.createParameter, {formatted: values});
         }
 
+
         async createParameters(params) {
-            return await this.db.batch(params.map(p => {
-                return db.query(sql.rule.createParameter, p);
-            }));
+            let values = new ParamFormatter(this.pgp, '${ruleId}, ${name}, ${paramType}, ${defaultValue}', params);
+            return this.db.query(sql.rule.createParameter, {formatted: values});
         }
 
         createActiveInBatch(params, t){
