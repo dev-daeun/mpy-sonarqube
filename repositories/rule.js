@@ -5,7 +5,6 @@ class RuleRepository{
         constructor(db, pgp){
             this.db = db;
             this.pgp = pgp;
-            this.paramSet = new this.pgp.helpers.ColumnSet(['rule_id', 'name', 'param_type', 'default_value'], {table: 'rules_parameters'});
         }
 
         createInBatch(params, t){
@@ -24,13 +23,16 @@ class RuleRepository{
             return await this.db.any(sql.rule.createProfile, params);
         }
 
-        createParametersInBatch(params, t){
-            return t.many(this.pgp.helpers.insert(params, this.paramSet) + 'RETURNING Id');
+        createParametersInBatch(params, t) {
+            return t.batch(params.map(p => {
+                return t.query(sql.rule.createParameter, p);
+            }));
         }
 
-
-        async createParameters(params){
-            return await this.db.many(this.pgp.helpers.insert(params, this.paramSet) + 'RETURNING Id');
+        async createParameters(params) {
+            return await this.db.batch(params.map(p => {
+                return db.query(sql.rule.createParameter, p);
+            }));
         }
 
         createActiveInBatch(params, t){

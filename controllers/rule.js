@@ -56,16 +56,16 @@ async function create(ctx, next){
                         profileKee = firstResult[1][0].kee,
                         parameters =[
                             {
-                                rule_id: ruleId,
+                                ruleId: ruleId,
                                 name: ctx.request.body.parameters[0].name,
-                                param_type: 'STRING',
-                                default_value: ctx.request.body.parameters[0].value
+                                paramType: 'STRING',
+                                defaultValue: ctx.request.body.parameters[0].value
                             },
                             {
-                                rule_id: ruleId,
+                                ruleId: ruleId,
                                 name: ctx.request.body.parameters[1].name,
-                                param_type: 'STRING',
-                                default_value: ctx.request.body.parameters[1].value
+                                paramType: 'STRING',
+                                defaultValue: ctx.request.body.parameters[1].value
                             }
                         ],
                         activeRules = {
@@ -79,7 +79,7 @@ async function create(ctx, next){
                     let createParameters = ctx.state.db.rule.createParametersInBatch(parameters, t2),
                         createActive = ctx.state.db.rule.createActiveInBatch(activeRules, t2),
                         secondResult = await t2.batch([createParameters, createActive]);
-                    console.log(secondResult)
+                    console.log(secondResult[0][0])
                 });
 
                         //create parameters, metadata, org profile, etc with result above
