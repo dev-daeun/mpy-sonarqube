@@ -6,4 +6,4 @@ INSERT INTO rules_parameters
                         default_value
             )
             VALUES ${formatted}
-RETURNING Id
+RETURNING Id, name, default_value as value
