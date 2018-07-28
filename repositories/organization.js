@@ -7,12 +7,12 @@ class OrganizationRepository{
         this.pgp = pgp;
     }
 
-    findInBatch(t){
-        return t.query(sql.organization.find);
+    findInBatch(params, t){
+        return t.query(sql.organization.find, params);
     }
 
     async find(){
-        return await this.db.any(sql.organization.find);
+        return await this.db.any(sql.organization.find, params);
     }
 
     createInBatch(params, t){

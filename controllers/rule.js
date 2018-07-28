@@ -7,17 +7,12 @@ const uniqid = require('uniqid');
  * @module repositories/rule
  */
 
-
 async function create(ctx, next){
     try{
-
         let t = ctx.state.t ? ctx.state.t : ctx.state.db;
-
         await t.tx(async t2 => {
             try{
-
                 let date = Date.now(),
-                    timezone = new Date(),
                     rule = {
                         name: ctx.request.body.name,
                         pluginRuleKey: ctx.request.body.name.split(' ').join('_'),
@@ -33,25 +28,18 @@ async function create(ctx, next){
                         pluginKey: plugin.plugin[ctx.request.body.language],
                         createdAt: date,
                         updatedAt: date
-                    },
-                    profile = {
-                        name: 'Custom Rules',
-                        language: ctx.request.body.language,
-                        kee: uniqid(field.ruleProfilePrefix),
-                        rulesUpdatedAt: timezone,
-                        createdAt: timezone,
-                        updatedAt: timezone,
-                        isBuiltIn: false
                     };
 
                 let firstResult = await t2.batch([
                     ctx.state.db.rule.createInBatch(rule, t2),
-                    ctx.state.db.rule.createProfileInBatch(profile, t2)
+                    ctx.state.db.ruleProfile.findInBatch({
+                        name: ctx.state.user,
+                        language: ctx.request.body.language
+                    }, t2)
                 ]);
 
                 let ruleId = firstResult[0][0].id,
                     profileId = firstResult[1][0].id,
-                    profileKee = firstResult[1][0].kee,
                     parameters =[
                         {
                             ruleId: ruleId,
@@ -75,7 +63,7 @@ async function create(ctx, next){
                     };
 
                 let secondResult = await t2.batch([
-                        ctx.state.db.rule.createParametersInBatch(parameters, t2),
+                        ctx.state.db.ruleParameter.createInBatch(parameters, t2),
                         ctx.state.db.rule.createActiveInBatch(activeRules, t2)
                     ]);
 
@@ -96,7 +84,7 @@ async function create(ctx, next){
                         }
                     ];
                 await t2.batch([
-                    ctx.state.db.rule.createActiveParameterInBatch(activeParameters, t2)
+                    ctx.state.db.ruleParameter.createActiveInBatch(activeParameters, t2)
                 ]);
 
 

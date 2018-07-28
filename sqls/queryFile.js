@@ -26,10 +26,22 @@ module.exports = {
     },
     rule: {
         create: sql('rule/create.sql'),
-        createProfile: sql('rule/createProfile.sql'),
         createActive: sql('rule/createActive.sql'),
-        createParameter: sql('rule/createParameter.sql'),
-        createActiveParameter: sql('rule/createActiveParameter.sql')
+    },
+    ruleParameter: {
+        create: sql('ruleParameter/create.sql'),
+        createActive: sql('ruleParameter/createActive.sql')
+    },
+    ruleProfile: {
+        create: sql('ruleProfile/create.sql'),
+        find: sql('ruleProfile/find.sql')
+    },
+    orgProfile: {
+        create: sql('orgProfile/create.sql'),
+        find: sql('orgProfile/find.sql')
+    },
+    defaultProfile: {
+        create: sql('defaultProfile/create.sql')
     }
 
 };

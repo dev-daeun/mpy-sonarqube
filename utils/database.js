@@ -1,19 +1,19 @@
 const dbConfig = require('../configs/postgresql');
-const Issue = require('../repositories/issue');
-const User = require('../repositories/user');
-const Organization = require('../repositories/organization');
-const UserToken = require('../repositories/usertoken');
-const Rule = require('../repositories/rule');
+const Repo = require('../repositories/repoFile');
 const monitor = require('../monitor');
 
 const initOptions = {
     promiseLib: Promise,
     extend(obj, dc) {
-        obj.issue = new Issue(obj, pgp);
-        obj.user = new User(obj, pgp);
-        obj.organization = new Organization(obj, pgp);
-        obj.usertoken = new UserToken(obj, pgp);
-        obj.rule = new Rule(obj, pgp);
+        obj.issue = new Repo.Issue(obj, pgp);
+        obj.user = new Repo.User(obj, pgp);
+        obj.organization = new Repo.Organization(obj, pgp);
+        obj.usertoken = new Repo.UserToken(obj, pgp);
+        obj.rule = new Repo.Rule(obj, pgp);
+        obj.ruleParameter = new Repo.RuleParameter(obj, pgp);
+        obj.ruleProfile = new Repo.RuleProfile(obj, pgp);
+        obj.orgProfile = new Repo.OrgProfile(obj, pgp);
+        obj.defaultProfile = new Repo.DefaultProfile(obj, pgp);
     },
     error(err, e) {
         monitor.error(err, e);
