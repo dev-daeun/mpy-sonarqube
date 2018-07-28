@@ -9,7 +9,7 @@ const modes = new TransactionMode({
 
 
 
-async function execTrans(ctx, next){
+async function exec(ctx, next){
     try{
         await ctx.state.db.tx({modes}, async t => {
             try {
@@ -30,5 +30,5 @@ async function execTrans(ctx, next){
 
 
 module.exports = {
-    execTrans
+    exec
 };

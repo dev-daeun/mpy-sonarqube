@@ -1,4 +1,4 @@
-const field = require('../configs/field');
+const field = require('../codes/field');
 const crypto = require('../utils/crypto');
 
 
