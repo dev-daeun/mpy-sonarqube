@@ -1,11 +1,9 @@
-const ResCtrl = require('../controllers/response');
-const RuleCtrl = require('../controllers/rule');
-const tx = require('../controllers/transaction');
+const Ctrl = require('../controllers/ctrlFile');
 const Router = require('koa-router');
 const router = new Router();
 
 
 
-router.post('/rule', ResCtrl.post, tx.execTrans, RuleCtrl.create);
+router.post('/rule', Ctrl.Response.post, Ctrl.Trans.exec, Ctrl.Rule.create);
 
 module.exports = router;

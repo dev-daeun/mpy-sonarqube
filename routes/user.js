@@ -1,21 +1,18 @@
-const ResCtrl = require('../controllers/response');
-const UserCtrl = require('../controllers/user');
-const OrgCtrl = require('../controllers/organization');
-const TokenCtrl = require('../controllers/usertoken');
-const AuthCtrl = require('../controllers/auth');
-const tx = require('../controllers/transaction');
+const Ctrl = require('../controllers/ctrlFile');
 const Router = require('koa-router');
 const router = new Router();
 
 
 
 
-router.post('/user', ResCtrl.post,
-                     tx.execTrans,
-                     UserCtrl.create,
-                     OrgCtrl.create,
-                     TokenCtrl.create);
+router.post('/user', Ctrl.Response.post,
+                     Ctrl.Trans.exec,
+                     Ctrl.User.create,
+                     Ctrl.Organization.create,
+                     Ctrl.UserToken.create,
+                     Ctrl.Profile.create
+                     );
 
-router.post('/login', ResCtrl.post, AuthCtrl.sign);
+router.post('/login', Ctrl.Response.post, Ctrl.Auth.sign);
 
 module.exports = router;
