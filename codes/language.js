@@ -1,4 +1,5 @@
 module.exports = {
+    names: ['js', 'py', 'java'],
     rule: {
         py: 'python',
         java: 'squid',

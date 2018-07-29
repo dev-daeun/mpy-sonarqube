@@ -1,4 +1,4 @@
-const plugin = require('../codes/rulePlugin').plugin;
+const lang = require('../codes/language');
 const field = require('../codes/field');
 const uniqid = require('uniqid');
 
@@ -12,10 +12,10 @@ async function create(ctx, next){
             date = Date.now,
             rulesProfiles = [];
 
-        for(let key of Object.keys(plugin)) {
+        for(let name of lang.names) {
             rulesProfiles.push({
                 name: ctx.request.body.username + ' Rules',
-                language: plugin[key],
+                language: name,
                 kee: uniqid(field.ruleProfilePrefix),
                 rulesUpdatedAt: null,
                 createdAt: timezone,
@@ -32,22 +32,34 @@ async function create(ctx, next){
         ]);
 
         let orgProfile = [];
+        let defaultProfile = [];
+
         for(let rp of firstResult[0]){
             orgProfile.push({
-                uuid: uniqid(),
+                uuid: uniqid(field.orgProfilePrefix),
                 orgUid: firstResult[1][0].uuid,
                 ruleProfileUid: rp.kee,
                 createdAt: date,
                 updatedAt: date
             });
+
+            defaultProfile.push({
+                orgUid: firstResult[1][0].uuid,
+                language: rp.language,
+                ruleProfileUid: rp.kee,
+                createdAt: date,
+                updatedAt: date
+            })
+
         }
 
-        let secondResult = await t.batch([
-            ctx.state.db.orgProfile.createInBatch(orgProfile, t)
+        await t.batch([
+            ctx.state.db.orgProfile.createInBatch(orgProfile, t),
+            ctx.state.db.defaultProfile.createInBatch(defaultProfile, t)
         ]);
 
-
         await next();
+
     }catch(err){
         ctx.throw(500, new Error('CreateProfileError: '+err.message));
     }
