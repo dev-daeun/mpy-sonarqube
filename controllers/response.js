@@ -6,6 +6,14 @@ async function post(ctx, next){
     ctx.response.body = ctx.body;
 }
 
+async function get(ctx, next){
+
+    await next();
+    ctx.response.status = 200;
+    ctx.response.body = ctx.body;
+}
+
 module.exports = {
-    post
+    post,
+    get
 };

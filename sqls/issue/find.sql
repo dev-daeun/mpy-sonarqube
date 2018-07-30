@@ -3,10 +3,8 @@ AS
   SELECT organization_uuid
   FROM   organization_members
   WHERE  user_id = (SELECT users.id
-                    FROM   user_tokens
-                           JOIN users
-                             ON user_tokens.login = users.login
-                    WHERE  users.login = ${login});
+                    FROM   users
+                    WHERE login = ${login});
 
 
 SELECT issues.Id,

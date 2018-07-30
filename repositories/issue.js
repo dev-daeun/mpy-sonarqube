@@ -1,4 +1,4 @@
-const sql = require('../sqls/queryFile')
+const sql = require('../sqls/queryFile');
 
 
 class IssueRepository{

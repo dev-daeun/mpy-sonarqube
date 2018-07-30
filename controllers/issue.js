@@ -1,21 +1,21 @@
 
+
 //postgreSQL에서 스캔결과 조회
 async function search(ctx, next){
     try{
+
         let message = {
             login: ctx.state.user,
-            projectKee: ctx.req.file.filename.split('.')[0]
+            projectKee: ctx.request.query.fileKey
         };
 
-        let issue = ctx.state.db.issue;
-        let searchIssue;
-        if(ctx.state.t){
-             searchIssue = issue.findInBatch(message, ctx.state.t);
-            ctx.state.list.push(searchIssue);
-        }
-        else searchIssue = await issue.find(message);
-        
-        ctx.body = searchIssue;
+        if(ctx.state.t)
+            ctx.body = await ctx.state.t.batch([
+                ctx.state.db.issue.findInBatch(message, ctx.state.t)
+            ]);
+        else
+            ctx.body = await ctx.state.db.issue.find(message);
+
         await next();
 
     }catch(err){

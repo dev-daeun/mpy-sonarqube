@@ -9,7 +9,10 @@ router.post('/issue', Ctrl.Response.post,
                       Ctrl.Auth.verify,
                       Ctrl.UserToken.search,
                       upload.single('file'),
-                      Ctrl.File.scan,
-                      Ctrl.Issue.search);
+                      Ctrl.File.scan);
+
+router.get('/issue', Ctrl.Response.get,
+                     Ctrl.Auth.verify,
+                     Ctrl.Issue.search);
 
 module.exports = router;

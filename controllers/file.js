@@ -11,8 +11,10 @@ async function scan(ctx, next){
         filePath = path.join(__dirname, '..', '/files/'),
         login = ctx.state.sonartoken;
 
-    console.log("login : ", login)
     await sonar.scan(zippedFile, unzippedFile, filePath, login);
+    ctx.body = {
+        fileKey: ctx.req.file.filename.split('.')[0]
+    };
     await next();
 
    }catch(err){
