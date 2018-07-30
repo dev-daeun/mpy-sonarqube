@@ -8,6 +8,7 @@ const initOptions = {
         obj.issue = new Repo.Issue(obj, pgp);
         obj.user = new Repo.User(obj, pgp);
         obj.organization = new Repo.Organization(obj, pgp);
+        obj.orgUser = new Repo.OrgUser(obj, pgp);
         obj.usertoken = new Repo.UserToken(obj, pgp);
         obj.rule = new Repo.Rule(obj, pgp);
         obj.ruleParameter = new Repo.RuleParameter(obj, pgp);

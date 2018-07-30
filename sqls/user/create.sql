@@ -25,3 +25,5 @@ VALUES     ( ${login},
              false,
              false,
              true )
+
+RETURNING Id

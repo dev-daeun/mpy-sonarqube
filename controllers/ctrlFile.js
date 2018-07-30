@@ -8,5 +8,6 @@ module.exports = {
     Rule: require('./rule'),
     Trans: require('./transaction'),
     User: require('./user'),
-    UserToken: require('./usertoken')
+    UserToken: require('./usertoken'),
+    OrgUser: require('./orgUser')
 };

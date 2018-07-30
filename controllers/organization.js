@@ -13,8 +13,10 @@ async function create(ctx, next){
         };
         let org = ctx.state.db.organization;
         if(ctx.state.t){
-            let createOrg = org.createInBatch(message, ctx.state.t);
-            ctx.state.list.push(createOrg);
+            let createdOrg = await ctx.state.t.batch([
+                org.createInBatch(message, ctx.state.t)
+            ]);
+            ctx.state.createdOrg = createdOrg;
         }
         else await org.create(message);
         await next();

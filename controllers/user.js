@@ -18,8 +18,10 @@ async function create(ctx, next){
             };
         let user = ctx.state.db.user;
         if(ctx.state.t){
-            let createUser = user.createInBatch(message, ctx.state.t);
-            ctx.state.list.push(createUser);
+            let createdUser = await ctx.state.t.batch([
+                ctx.state.db.user.createInBatch(message, ctx.state.t)
+            ]);
+            ctx.state.createdUser = createdUser;
         }
         else await user.create(message);
         await next();

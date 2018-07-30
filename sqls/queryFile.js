@@ -42,6 +42,9 @@ module.exports = {
     },
     defaultProfile: {
         create: sql('defaultProfile/create.sql')
+    },
+    orgUser: {
+        create: sql('orgUser/create.sql')
     }
 
 };

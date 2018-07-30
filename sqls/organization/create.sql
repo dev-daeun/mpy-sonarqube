@@ -13,3 +13,4 @@ VALUES      (${uuid},
              ${updatedAt},
              true,
              false)
+RETURNING uuid

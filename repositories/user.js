@@ -9,7 +9,7 @@ class UserRepository{
 
 
     createInBatch(params, t){
-        return t.none(sql.user.create, params);
+        return t.query(sql.user.create, params);
     }
 
     async create(params){

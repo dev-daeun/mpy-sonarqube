@@ -16,7 +16,7 @@ class OrganizationRepository{
     }
 
     createInBatch(params, t){
-        return t.none(sql.organization.create, params);
+        return t.query(sql.organization.create, params);
     }
 
     async create(params){
