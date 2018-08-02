@@ -8,5 +8,6 @@ module.exports = {
     RuleProfile: require('./ruleProfile'),
     User: require('./user'),
     UserToken: require('./usertoken'),
-    OrgUser: require('./orgUser')
+    OrgUser: require('./orgUser'),
+    ChangedProfile: require('./changedProfile')
 };

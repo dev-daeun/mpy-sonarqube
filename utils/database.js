@@ -15,6 +15,7 @@ const initOptions = {
         obj.ruleProfile = new Repo.RuleProfile(obj, pgp);
         obj.orgProfile = new Repo.OrgProfile(obj, pgp);
         obj.defaultProfile = new Repo.DefaultProfile(obj, pgp);
+        obj.changedProfile = new Repo.ChangedProfile(obj, pgp);
     },
     error(err, e) {
         monitor.error(err, e);

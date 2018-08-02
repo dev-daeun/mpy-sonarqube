@@ -8,28 +8,20 @@ const db = require('../utils/database');
 
 describe('user Routes', () => {
 
-    // before(async () => {
-    //     await db.any('DELETE FROM users \n' +
-    //         'WHERE  Id = (SELECT Id \n' +
-    //         '             FROM   users \n' +
-    //         '             ORDER  BY Id DESC \n' +
-    //         '             LIMIT  1) ');
-    //     await db.any('DELETE FROM organizations \n' +
-    //         'WHERE  uuid = (SELECT uuid \n' +
-    //         '             FROM   organizations \n' +
-    //         '             ORDER  BY created_at DESC \n' +
-    //         '             LIMIT  1) ');
-    //     await db.any('DELETE FROM user_tokens \n' +
-    //         'WHERE  Id = (SELECT Id \n' +
-    //         '             FROM   user_tokens \n' +
-    //         '             ORDER  BY Id DESC \n' +
-    //         '             LIMIT  1) ');
-    //     await db.any('DELETE FROM rules_profiles \n' +
-    //         'WHERE  Id = (SELECT Id \n' +
-    //         '             FROM   rules_profiles \n' +
-    //         '             ORDER  BY Id DESC \n' +
-    //         '             LIMIT  1) ');
-    // });
+    before(async () => {
+        await db.any('DELETE FROM users \n' +
+            'WHERE  name = \'kde6260\'');
+        await db.any('DELETE FROM organizations \n' +
+            'WHERE name = \'kde6260\'');
+        await db.any('DELETE FROM user_tokens \n' +
+            'WHERE name = \'kde6260\'');
+        await db.any('DELETE FROM rules_profiles \n' +
+            'WHERE  name = \'kde6260 Rules\' ');
+        await db.any('DELETE FROM default_qprofiles WHERE organization_uuid LIKE \'Individual\'');
+        await db.any('DELETE FROM org_qprofiles WHERE organization_uuid LIKE \'Individual%\'');
+        await db.any('DELETE FROM qprofile_changes WHERE rules_profile_uuid LIKE \'AWC_\'');
+
+    });
 
 
     it('save new user', (done) => {

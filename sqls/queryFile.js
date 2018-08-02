@@ -43,6 +43,9 @@ module.exports = {
     defaultProfile: {
         create: sql('defaultProfile/create.sql')
     },
+    changedProfile: {
+        createDefault: sql('changedProfile/createDefault.sql')
+    },
     orgUser: {
         create: sql('orgUser/create.sql')
     }
