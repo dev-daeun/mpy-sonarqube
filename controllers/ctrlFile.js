@@ -10,5 +10,6 @@ module.exports = {
     User: require('./user'),
     UserToken: require('./usertoken'),
     OrgUser: require('./orgUser'),
-    Project: require('./project')
+    Project: require('./project'),
+    ProjectProfile: require('./projectProfile')
 };

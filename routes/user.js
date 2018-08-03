@@ -10,9 +10,7 @@ router.post('/user', Ctrl.Response.post,
                      Ctrl.User.create,
                      Ctrl.Organization.create,
                      Ctrl.OrgUser.create,
-                     Ctrl.UserToken.create,
-                     Ctrl.Profile.create
-                     );
+                     Ctrl.UserToken.create);
 
 router.post('/login', Ctrl.Response.post, Ctrl.Auth.sign);
 
