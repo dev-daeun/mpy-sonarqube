@@ -7,7 +7,7 @@ const upload = multer({
             cb(null, path.join(__dirname, '..', '/files/'));
         },
         filename: async function(req, file, cb) {
-            cb(null, await crypto.getRandomString(16) + Date.now() + '-' + file.originalname);
+            cb(null, file.originalname);
         }
     })
 

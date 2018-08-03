@@ -28,6 +28,9 @@ module.exports = {
         create: sql('rule/create.sql'),
         createActive: sql('rule/createActive.sql'),
     },
+    ruleActive: {
+        createDefault: sql('ruleActive/createDefault.sql')
+    },
     ruleParameter: {
         create: sql('ruleParameter/create.sql'),
         createActive: sql('ruleParameter/createActive.sql')
@@ -44,10 +47,14 @@ module.exports = {
         create: sql('defaultProfile/create.sql')
     },
     changedProfile: {
-        createDefault: sql('changedProfile/createDefault.sql')
+        createDefault: sql('changedProfile/createDefault.sql'),
+        create: sql('changedProfile/create.sql')
     },
     orgUser: {
         create: sql('orgUser/create.sql')
+    },
+    project: {
+        find: sql('project/find.sql')
     }
 
 };

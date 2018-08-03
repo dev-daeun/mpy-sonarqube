@@ -9,5 +9,6 @@ module.exports = {
     Trans: require('./transaction'),
     User: require('./user'),
     UserToken: require('./usertoken'),
-    OrgUser: require('./orgUser')
+    OrgUser: require('./orgUser'),
+    Project: require('./project')
 };
