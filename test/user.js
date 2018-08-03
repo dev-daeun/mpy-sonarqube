@@ -14,13 +14,7 @@ describe('user Routes', () => {
         await db.any('DELETE FROM organizations \n' +
             'WHERE name = \'kde6260\'');
         await db.any('DELETE FROM user_tokens \n' +
-            'WHERE name = \'kde6260\'');
-        await db.any('DELETE FROM rules_profiles \n' +
-            'WHERE  name = \'kde6260 Rules\' ');
-        await db.any('DELETE FROM default_qprofiles WHERE organization_uuid LIKE \'Individual\'');
-        await db.any('DELETE FROM org_qprofiles WHERE organization_uuid LIKE \'Individual%\'');
-        await db.any('DELETE FROM qprofile_changes WHERE rules_profile_uuid LIKE \'AWC_\'');
-
+            'WHERE login = \'kde6260\'');
     });
 
 

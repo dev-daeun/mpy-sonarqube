@@ -3,7 +3,7 @@ module.exports = {
     File: require('./file'),
     Issue: require('./issue'),
     Organization: require('./organization'),
-    Profile: require('./profile'),
+    QualityProfile: require('./qualityProfile'),
     Response: require('./response'),
     Rule: require('./rule'),
     Trans: require('./transaction'),
@@ -11,5 +11,6 @@ module.exports = {
     UserToken: require('./usertoken'),
     OrgUser: require('./orgUser'),
     Project: require('./project'),
-    ProjectProfile: require('./projectProfile')
+    ProjectProfile: require('./projectProfile'),
+    RuleProfile: require('./ruleProfile')
 };

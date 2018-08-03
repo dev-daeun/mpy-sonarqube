@@ -14,5 +14,10 @@ module.exports = {
         py: 44,
         java: 1114,
         js: 105
+    },
+    templateKey: {
+        'py': 'python:XPath',
+        'java': 'squid:ArchitecturalConstraint',
+        'js': 'javascript:CommentRegularExpression'
     }
 }

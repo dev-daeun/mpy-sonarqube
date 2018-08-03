@@ -1,4 +1,5 @@
-const plugin = require('../codes/rulePlugin');
+const mapper = require('../codes/language');
+const request = require('request-promise');
 const field = require('../codes/field');
 const uniqid = require('uniqid');
 
@@ -6,94 +7,50 @@ const uniqid = require('uniqid');
  * Rule controller.
  * @module repositories/rule
  */
+function createParams(name, key, description, parameters){
+    let p1 = 'name=' + name+';';
+    let p2 = 'key='+key+';';
+    let p3 = 'markdown_description='+description+';';
+    let p4 = parameters[0].name + '=' + parameters[0].value + ';';
+    let p5 = parameters[1].name + '=' + parameters[1].value + ';';
 
+    return p1+p2+p3+p4+p5;
+}
+
+
+/* 룰 등록 api */
 async function create(ctx, next){
     try{
-        let t = ctx.state.t ? ctx.state.t : ctx.state.db;
-        await t.tx(async t2 => {
-            try{
-                let date = Date.now(),
-                    rule = {
-                        name: ctx.request.body.name,
-                        pluginRuleKey: ctx.request.body.name.split(' ').join('_'),
-                        pluginName: plugin.rule[ctx.request.body.language],
-                        description:  ctx.request.body.description,
-                        priority: ctx.request.body.severity,
-                        templateId: plugin.template[ctx.request.body.language],
-                        status: ctx.request.body.status,
-                        language: ctx.request.body.language,
-                        isTemplate: false,
-                        descriptionFormat: 'MARKDOWN',
-                        ruleType: ctx.request.body.ruleType,
-                        pluginKey: plugin.plugin[ctx.request.body.language],
-                        createdAt: date,
-                        updatedAt: date
-                    };
+        let name = ctx.request.body.name;
+        let description = ctx.request.body.description;
+        let customKey = ctx.request.body.name.split(' ').join('_');
 
-                let firstResult = await t2.batch([
-                    ctx.state.db.rule.createInBatch(rule, t2),
-                    ctx.state.db.ruleProfile.findInBatch({
-                        name: ctx.state.user,
-                        language: ctx.request.body.language
-                    }, t2)
-                ]);
-
-                let ruleId = firstResult[0][0].id,
-                    profileId = firstResult[1][0].id,
-                    parameters =[
-                        {
-                            ruleId: ruleId,
-                            name: ctx.request.body.parameters[0].name,
-                            paramType: 'STRING',
-                            defaultValue: ctx.request.body.parameters[0].value
-                        },
-                        {
-                            ruleId: ruleId,
-                            name: ctx.request.body.parameters[1].name,
-                            paramType: 'STRING',
-                            defaultValue: ctx.request.body.parameters[1].value
-                        }
-                    ],
-                    activeRules = {
-                        profileId: profileId,
-                        ruleId: ruleId,
-                        failureLevel: ctx.request.body.severity,
-                        createdAt: date,
-                        updatedAt: date
-                    };
-
-                let secondResult = await t2.batch([
-                        ctx.state.db.ruleParameter.createInBatch(parameters, t2),
-                        ctx.state.db.rule.createActiveInBatch(activeRules, t2)
-                    ]);
-
-                let returnedParams = secondResult[0],
-                    returnedActive = secondResult[1][0],
-                    activeParameters = [
-                        {
-                            activeId: returnedActive.id,
-                            parameterId: returnedParams[0].id,
-                            value: returnedParams[0].value,
-                            paramKey: returnedParams[0].name
-                        },
-                        {
-                            activeId: returnedActive.id,
-                            parameterId: returnedParams[1].id,
-                            value: returnedParams[1].value,
-                            paramKey: returnedParams[1].name
-                        }
-                    ];
-                await t2.batch([
-                    ctx.state.db.ruleParameter.createActiveInBatch(activeParameters, t2)
-                ]);
-
-
-            }catch(err){
-                throw err;
+        request({
+            uri: 'http://localhost:9000/api/rules/create',
+            method: 'POST',
+            auth: {
+                user: 'admin',
+                pass: 'admin'
+            },
+            form: {
+                name: name,
+                markdown_description: description,
+                type: ctx.request.body.type,
+                severity: ctx.request.body.severity,
+                status: ctx.request.body.status,
+                template_key: mapper.templateKey[ctx.request.body.language],
+                custom_key: customKey,
+                prevent_reactivation: true,
+                params: createParams(name, customKey, description, ctx.request.body.parameters)
             }
+        }).then(async () => {
+            ctx.state.customKey = customKey;
+            ctx.body = 'ok';
+            await next();
+        }).catch(err => {
+            throw err;
         });
 
-        await next();
     }catch(err){
         ctx.throw(500, new Error('CreateRuleError:' +err.message));
     }

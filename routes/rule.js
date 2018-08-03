@@ -4,6 +4,12 @@ const router = new Router();
 
 
 
-router.post('/rule', Ctrl.Response.post, Ctrl.Trans.exec, Ctrl.Rule.create);
+router.post('/rule',
+        Ctrl.Response.post,
+        Ctrl.Auth.verify,
+        Ctrl.Rule.create,
+        Ctrl.RuleProfile.create,
+        Ctrl.ProjectProfile.create
+);
 
 module.exports = router;

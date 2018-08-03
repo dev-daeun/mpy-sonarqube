@@ -7,6 +7,6 @@ const router = new Router();
 router.post('/profile',
     Ctrl.Response.post,
     Ctrl.Auth.verify,
-    Ctrl.Profile.create);
+    Ctrl.QualityProfile.create);
 
 module.exports = router;
