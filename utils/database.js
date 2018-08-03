@@ -6,18 +6,11 @@ const initOptions = {
     promiseLib: Promise,
     extend(obj, dc) {
         obj.issue = new Repo.Issue(obj, pgp);
+        obj.project = new Repo.Project(obj, pgp);
         obj.user = new Repo.User(obj, pgp);
         obj.organization = new Repo.Organization(obj, pgp);
         obj.orgUser = new Repo.OrgUser(obj, pgp);
         obj.usertoken = new Repo.UserToken(obj, pgp);
-        obj.rule = new Repo.Rule(obj, pgp);
-        obj.ruleActive = new Repo.RuleActive(obj, pgp);
-        obj.ruleParameter = new Repo.RuleParameter(obj, pgp);
-        obj.ruleProfile = new Repo.RuleProfile(obj, pgp);
-        obj.orgProfile = new Repo.OrgProfile(obj, pgp);
-        obj.defaultProfile = new Repo.DefaultProfile(obj, pgp);
-        obj.changedProfile = new Repo.ChangedProfile(obj, pgp);
-        obj.project = new Repo.Project(obj, pgp);
     },
     error(err, e) {
         monitor.error(err, e);
