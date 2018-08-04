@@ -4,27 +4,23 @@ const superagent = require('supertest');
 const app = require('../app');
 const request = superagent(app.listen());
 const db = require('../utils/postgresql');
-
+const test = require('../configs/test');
 
 describe('user Routes', () => {
 
     before(async () => {
-        await db.any('DELETE FROM users \n' +
-            'WHERE  name = \'kde6260\'');
-        await db.any('DELETE FROM organizations \n' +
-            'WHERE name = \'kde6260\'');
-        await db.any('DELETE FROM user_tokens \n' +
-            'WHERE login = \'kde6260\'');
+        await db.any('DELETE FROM rules_profiles \n' +
+            'WHERE  id = (SELECT id FROM rules_profiles ORDER BY id desc LIMIT 1)');
     });
 
 
-    it('save new user', (done) => {
+    it('save new profile', (done) => {
         request
-            .post('/user')
+            .post('/profile')
+            .set({'authorization': test.jwt})
             .send({
-                username: "kde6260",
-                email: "kde6260@gmail.com",
-                password: "momo1234"
+                project: "python-beginner",
+                language: "py"
             })
             .expect(201)
             .end((err, res) => {

@@ -3,7 +3,7 @@
 const superagent = require('supertest');
 const app = require('../app');
 const request = superagent(app.listen());
-const db = require('../utils/database');
+const db = require('../utils/postgresql');
 const test = require('../configs/test');
 
 
@@ -65,6 +65,7 @@ describe('rule Routes', () => {
                     console.log(err);
                     done(err);
                 }
+                done(res);
             });
 
     });
