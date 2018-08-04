@@ -3,9 +3,8 @@ const logger = require('koa-logger');
 const Koa = require('koa');
 const static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
-const jwt = require('koa-jwt');
-const db = require('./utils/database');
-const authConfig = require('./configs/auth.js');
+const db = require('./utils/postgresql');
+const redis = require('./utils/redis');
 const app = new Koa();
 
 const swagger = require('swagger-koa');
@@ -13,6 +12,8 @@ const swaggerUI = require('swagger-ui-koa');
 const swaggerJSDOC = require('swagger-jsdoc');
 const convert = require('koa-convert');
 const mount = require('koa-mount');
+
+
 
 //with jsdoc
 // const options = {
@@ -53,6 +54,7 @@ app.use(static(__dirname));
 app.use(async (ctx, next) => {
     ctx.compress = true;
     ctx.state.db = db;
+    ctx.state.redis = redis;
     await next();
 });
 

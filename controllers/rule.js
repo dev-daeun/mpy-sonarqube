@@ -1,20 +1,19 @@
 const mapper = require('../codes/language');
 const request = require('request-promise');
-const field = require('../codes/field');
-const uniqid = require('uniqid');
+
 
 /**
  * Rule controller.
  * @module repositories/rule
  */
 function createParams(name, key, description, parameters){
-    let p1 = 'name=' + name+';';
-    let p2 = 'key='+key+';';
-    let p3 = 'markdown_description='+description+';';
-    let p4 = parameters[0].name + '=' + parameters[0].value + ';';
-    let p5 = parameters[1].name + '=' + parameters[1].value + ';';
+    let p1 = 'name=' + name;
+    let p2 = 'key='+key;
+    let p3 = 'markdown_description='+description;
+    let p4 = parameters[0].name + '=' + parameters[0].value;
+    let p5 = parameters[1].name + '=' + parameters[1].value;
 
-    return p1+p2+p3+p4+p5;
+    return [p1, p2, p3, p4, p5].join(';');
 }
 
 
@@ -25,7 +24,7 @@ async function create(ctx, next){
         let description = ctx.request.body.description;
         let customKey = ctx.request.body.name.split(' ').join('_');
 
-        request({
+        await request({
             uri: 'http://localhost:9000/api/rules/create',
             method: 'POST',
             auth: {
@@ -43,13 +42,10 @@ async function create(ctx, next){
                 prevent_reactivation: true,
                 params: createParams(name, customKey, description, ctx.request.body.parameters)
             }
-        }).then(async () => {
-            ctx.state.customKey = customKey;
-            ctx.body = 'ok';
-            await next();
-        }).catch(err => {
-            throw err;
         });
+
+        ctx.state.customKey = customKey;
+        await next();
 
     }catch(err){
         ctx.throw(500, new Error('CreateRuleError:' +err.message));

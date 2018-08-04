@@ -1,10 +1,22 @@
 const request = require('request-promise');
 const lang = require('../codes/language');
-
+const redisConfig = require('../configs/redis');
 
 async function create(ctx, next){
   try{
-      request({
+
+      let message = {
+          column: 'project_uuid',
+          value: ctx.request.body.projectUid
+      };
+      let project = await ctx.state.db.project.findOne(message),
+          projectName = project[0].kee,
+          profileKey;
+
+      await ctx.state.redis.select(redisConfig.profileKeyDB);
+      profileKey = await ctx.state.redis.getAsync([ctx.state.user, projectName].join('-'));
+
+      await request({
           uri: 'http://localhost:9000/api/qualityprofiles/activate_rule',
           method: 'POST',
           auth: {
@@ -13,16 +25,15 @@ async function create(ctx, next){
           },
           form: {
               severity: ctx.request.body.severity,
-              profile_key: 'AWT_9zJb3qcyPegOrd42',
+              profile_key: profileKey,
               rule_key: lang.plugin[ctx.request.body.language]+':'+ ctx.state.customKey
           }
-      }).then(async body => {
-          console.log(body);
-          ctx.body = 'ok';
-          await next();
-      }).catch(err => {
-          throw err;
       });
+
+
+      ctx.state.project = project[0];
+      await next();
+
   }catch(err){
       ctx.throw(500, new Error('CreateRuleProfileError: '+err.message));
   }

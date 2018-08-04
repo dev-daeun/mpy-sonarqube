@@ -1,10 +1,14 @@
 const request = require('request-promise');
-
+const redisConfig = require('../configs/redis');
 
 /* 프로젝트와 rules profile associating 하는 api */
 async function create(ctx, next){
     try{
-        request({
+
+        await ctx.state.redis.select(redisConfig.profileKeyDB);
+        let profileKey = await ctx.state.redis.getAsync([ctx.state.user, ctx.state.project.kee].join('-'));
+
+        await request({
             uri: 'http://localhost:9000/api/qualityprofiles/add_project',
             method: 'POST',
             auth: {
@@ -12,19 +16,15 @@ async function create(ctx, next){
                 pass: 'admin'
             },
             form: {
-                profileKey: 'AWT_9zJb3qcyPegOrd42',
+                profileKey: profileKey,
                 projectUuid: ctx.request.body.projectUid
             }
-        }).then(async body => {
-            ctx.body = 'ok';
-            await next();
-        }).catch(err => {
-            throw err;
         });
 
+        await next();
 
     }catch(err){
-        ctx.throw(500, new Error('CreateRuleProfileError: '+err.message));
+        ctx.throw(500, new Error('CreateProjectProfileError: '+err.message));
     }
 }
 

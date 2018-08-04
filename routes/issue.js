@@ -10,7 +10,7 @@ router.post('/issue', Ctrl.Response.post,
                       Ctrl.UserToken.search,
                       upload.single('file'),
                       Ctrl.File.scan,
-                      Ctrl.Project.search);
+                      Ctrl.Project.searchByKee);
 
 router.get('/issue', Ctrl.Response.get,
                      Ctrl.Auth.verify,

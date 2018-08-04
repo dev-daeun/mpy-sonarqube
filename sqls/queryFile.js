@@ -13,7 +13,8 @@ module.exports = {
         find: sql('issue/find.sql')
     },
     project: {
-        find: sql('project/find.sql')
+        findAll: sql('project/findAll.sql'),
+        findOne: sql('project/findOne.sql')
     },
     user: {
         find: sql('user/find.sql'),

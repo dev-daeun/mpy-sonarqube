@@ -1,16 +1,17 @@
-async function search(ctx, next){
+async function searchByKee(ctx, next){
     try{
         let message = {
-            projectName: ctx.state.fileKey
+            column: 'kee',
+            value: ctx.state.fileKey
         };
 
         let project;
         if(ctx.state.t)
             project = await ctx.state.t.batch([
-                ctx.state.db.project.findInBatch(message, ctx.state.t)
+                ctx.state.db.project.findOneInBatch(message, ctx.state.t)
             ]);
         else
-            project = await ctx.state.db.project.find(message);
+            project = await ctx.state.db.project.findOne(message);
 
         ctx.body = {
             projectUid: project[0].project_uuid
@@ -18,10 +19,11 @@ async function search(ctx, next){
         await next();
 
     }catch(err){
-        ctx.throw(500, new Error("SearchProjectError:"+err.message));
+        ctx.throw(500, new Error("SearchProjectByKeeError:"+err.message));
     }
 }
 
+
 module.exports = {
-    search
+    searchByKee
 };
