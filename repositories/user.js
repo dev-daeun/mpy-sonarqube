@@ -15,6 +15,10 @@ class UserRepository{
     async create(params){
         return await this.db.any(sql.user.create, params);
     }
+
+    async find(params){
+        return await this.db.any(sql.user.find, params);
+    }
 }
 
 module.exports = UserRepository;

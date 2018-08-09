@@ -7,32 +7,6 @@ const db = require('./utils/postgresql');
 const redis = require('./utils/redis');
 const app = new Koa();
 
-const swagger = require('swagger-koa');
-const swaggerUI = require('swagger-ui-koa');
-const swaggerJSDOC = require('swagger-jsdoc');
-const convert = require('koa-convert');
-const mount = require('koa-mount');
-
-
-
-//with jsdoc
-// const options = {
-//     swaggerDefinition: {
-//         info: {
-//             title: 'API', // Title (required)
-//             version: '2.0.0', // Version (required)
-//         },
-//     },
-//     apis: [
-//         './controllers/user.js'
-//     ],
-// };
-
-// Initialize swagger-jsdoc -> returns validated swagger spec in json formatters
-// const swaggerSpec = swaggerJSDOC(options);
-// app.use(swaggerUI.serve); //serve swagger static files
-// app.use(convert(mount('/swagger', swaggerUI.setup(swaggerSpec)))); //mount endpoint for access
-//
 
 app.use(bodyParser({
     enableTypes: ['json', 'multipart/form-data'],
@@ -63,8 +37,9 @@ app.use(async (ctx, next) => {
     try {
         await next();
     } catch (err) {
-        ctx.status = err.status || 500;
-        ctx.body = err.message;
+        console.log(err);
+        ctx.response.status = err.status;
+        ctx.body = { message: err.status === 500 ? 'InternalServerError' : err.message };
         ctx.app.emit('error', err, ctx);
     }
 });
