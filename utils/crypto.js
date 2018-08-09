@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const verify = crypto.createVerify('sha256');
 
 function getRandomString(length){
     return new Promise((resolve, reject) => {
@@ -11,16 +12,13 @@ function getRandomString(length){
     });
 }
 
-async function hashDataWithSalt(rawData, alorithm){
+async function hashDataWithSalt(rawData, salt){
     try{
-        let salt = await getRandomString(32);
         let hash = crypto.createHmac('sha256', salt);
         hash.update(rawData);
         let hashedData = hash.digest('hex');
-        return {
-            salt: salt,
-            hashedData: hashedData
-        };
+        return hashedData;
+
     }catch(err){
         throw err;
     }
@@ -34,9 +32,16 @@ function hashData(rawData){
 
 }
 
+async function verifyData(raw, hashed, salt){
+    let hashedRaw = await hashDataWithSalt(raw, salt);
+    if(hashedRaw!==hashed) return false;
+    return true;
+}
+
 
 module.exports = {
     getRandomString,
     hashData,
-    hashDataWithSalt
+    hashDataWithSalt,
+    verifyData
 };

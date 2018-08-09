@@ -5,14 +5,15 @@ const crypto = require('../utils/crypto');
 async function create(ctx, next){
     try{
         let date = Date.now(),
-            crypted = await crypto.hashDataWithSalt(ctx.request.body.password),
+            salt = await crypto.getRandomString(32),
+            crypted = await crypto.hashDataWithSalt(ctx.request.body.password, salt),
             message = {
                 login: ctx.request.body.username,
                 username: ctx.request.body.username,
                 email: ctx.request.body.email,
-                cryptedPassword: crypted.hashedData,
+                cryptedPassword: crypted,
                 extIdProvider: field.extIdProvider,
-                salt: crypted.salt,
+                salt: salt,
                 createdAt: date,
                 updatedAt: date
             };
@@ -24,10 +25,11 @@ async function create(ctx, next){
             ctx.state.createdUser = createdUser;
         }
         else await user.create(message);
+        ctx.response.body = {};
         await next();
     }catch(err){
         console.log("create user error : ", err.message);
-        ctx.throw(500, new Error(err.message));
+        ctx.throw(err.status, err);
     }
 }
 
@@ -44,7 +46,8 @@ async function searchByName(ctx, next){
             await next();
 
     }catch(err){
-        ctx.throw(err.status, new Error(err.message));
+        console.log(err.message);
+        ctx.throw(err.status, err);
     }
 
 }
@@ -62,7 +65,8 @@ async function searchByEmail(ctx, next){
             await next();
 
     }catch(err){
-        ctx.throw(err.status, new Error(err.message));
+        console.log(err.message);
+        ctx.throw(err.status, err);
     }
 
 }
