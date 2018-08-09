@@ -6,9 +6,11 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "mocha"
-  },
+    "test": "mocha",
+    "apidoc": "apidoc -i ./routes -o ./public/apidoc"
+    },
   "dependencies": {
+    "apidoc": "^0.17.6",
     "bluebird": "^3.5.1",
     "crypto": "^1.0.1",
     "docdash": "^0.4.0",
@@ -24,7 +26,6 @@
     "koa-multer": "^1.0.2",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.3",
-    "koa2-swagger-ui": "^2.9.3",
     "path": "^0.12.7",
     "pg": "^7.4.3",
     "pg-monitor": "^1.0.0",
@@ -34,10 +35,6 @@
     "request-promise": "^4.2.2",
     "shelljs": "^0.8.2",
     "should": "^13.2.1",
-    "swagger-jsdoc": "^1.9.7",
-    "swagger-koa": "^2.0.0",
-    "swagger-ui": "^3.17.3",
-    "swagger-ui-koa": "0.0.1",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
