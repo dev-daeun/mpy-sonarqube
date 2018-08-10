@@ -1,8 +1,7 @@
 const $ = require('shelljs');
 
-function scan(zipped, unzipped, path, login){
+function scan(zipped, unzipped, path, login, username){
     return new Promise((resolve, reject) => {
-        console.log(login)
         $.cd(path);
         $.exec('tar -xzvf '+zipped, {async: true}, (code, stdout, stderr) => {
             if(stderr)
@@ -11,8 +10,8 @@ function scan(zipped, unzipped, path, login){
             $.exec('echo '
                 + '\'' +
                 + 'sonar.login=' + login + '\n'
-                + 'sonar.projectKey=' + zipped.split('.')[0] + '\n'
-                + 'sonar.projectName=' + zipped.split('.')[0] + '\n'
+                + 'sonar.projectKey=' + [username, zipped.split('.')[0]].join(':') + '\n'
+                + 'sonar.projectName=' + [username, zipped.split('.')[0]].join(':') + '\n'
                 + 'sonar.projectVersion=1.0\n'
                 + 'sonar.sources=.\n'
                 + 'sonar.java.binaries=./target\n'

@@ -7,5 +7,5 @@ SELECT issues.Id,
 FROM   issues
        JOIN projects
          ON issues.component_uuid = projects.uuid
-WHERE  projects.kee LIKE CONCAT(${projectKee}, ':%')
+WHERE  issues.project_uuid = ${projectUid}
 ORDER BY issues.Id DESC

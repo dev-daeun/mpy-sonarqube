@@ -6,20 +6,14 @@ async function search(ctx, next){
 
         let message = {
             login: ctx.state.user,
-            projectKee: ctx.request.query.fileKey
+            projectUid: ctx.request.query.projectUid
         };
 
-        if(ctx.state.t)
-            ctx.body = await ctx.state.t.batch([
-                ctx.state.db.issue.findInBatch(message, ctx.state.t)
-            ]);
-        else
-            ctx.body = await ctx.state.db.issue.find(message);
-
+        ctx.response.body = await ctx.state.db.issue.find(message);
         await next();
 
     }catch(err){
-        ctx.throw(500, new Error("SearchIssueError:"+err.message));
+        ctx.throw(err.status, err);
     }
 }
 

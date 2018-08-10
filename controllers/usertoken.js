@@ -17,14 +17,14 @@ async function create(ctx, next){
         if(ctx.state.t){
             let createToken = usertoken.createInBatch(message, ctx.state.t);
             ctx.state.list.push(createToken);
-        }
-        else
+        } else {
             await usertoken.create(message);
-
+        }
         await next();
 
     }catch(err){
-        ctx.throw(500, new Error('CreateTokenError:' +err.message));
+        console.log(err.message);
+        ctx.throw(err.status, err);
     }
 
 }
@@ -40,7 +40,8 @@ async function search(ctx, next){
         await next();
 
     }catch(err){
-        ctx.throw(500, new Error('VerifyTokenError :' +err.message));
+        console.log(err.message);
+        ctx.throw(err.status, err);
     }
 }
 

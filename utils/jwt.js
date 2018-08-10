@@ -25,14 +25,13 @@ function sign(data){
 }
 
 function verify(token){
-
     return new Promise((resolve, reject) => {
         fs.readFile(authConfig.publicKey, (err, key) => {
             if(err) reject(err);
             jwt.verify(token, key, (err, decoded) => {
-                if(err) reject(err);
-
-                resolve(decoded.data);
+                if(err) resolve(['external', err]);
+                else if(!decoded) resolve(['external', err]);
+                else resolve([null, decoded.data]);
             });
         });
     });

@@ -34,9 +34,14 @@ async function sign(ctx, next){
 async function verify(ctx, next){
     try{
 
-        let claim = await jwt.verify(ctx.request.header.authorization);
-        ctx.state.user = claim;
-        await next();
+        let [fail, claim] = await jwt.verify(ctx.request.header.authorization);
+
+        if(fail){
+            ctx.throw(401, new Error('InvalidToken'));
+        } else {
+            ctx.state.user = claim;
+            await next();
+        }
 
     }catch(err){
         console.log(err.message);

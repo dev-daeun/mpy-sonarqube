@@ -8,6 +8,10 @@ const upload = multer({
         },
         filename: async function(req, file, cb) {
             cb(null, file.originalname);
+        },
+        onError: async function(err, next){
+            console.log(err.message);
+            await next(err);
         }
     })
 
