@@ -28,7 +28,7 @@ const upload = require('../utils/fileUploader');
  *     HTTP/1.1 201 Created
  *     {
  *       "message": "Created",
- *       "projectUid": "AWUI8pmzwpiz1CcmvZNg",
+ *       "projectUid": "AWUj0vyggcVA6lzhxT_K",
          "issues": [
             {
                 "id": "2",
@@ -71,6 +71,62 @@ router.post('/issue', Ctrl.Response.post,
                       Ctrl.File.scan,
                       Ctrl.Project.searchByKee);
 
+
+
+/**
+ * @api {GET} /issue 보고서에서 조회할 스캔결과 요청
+ * @apiDescription 보고서에 뿌려줄 스캔결과를 요청합니다.
+ * @apiName get results of scanned files
+ * @apiGroup Issue
+ *
+ * @apiHeader (Request header) {String} authorization jwt발급 API로 받은 토큰
+ * @apiHeaderExample {json} Header-Example:
+ *     {
+ *       "Authorization": "sweofskdjfao390823nn3w9cvxn==2349sjfsks..."
+ *     }
+ * @apiParam (Request querystring) {String} projectUid 프로젝트 스캔API에서 받은 projectUid
+ * @apiExample Example usage:
+ *     endpoint: http://localhost:6260/issue?projectUid=AWUj0vyggcVA6lzhxT_K
+ *
+ * @apiSuccess (200) OK 조회 성공
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+         "issues": [
+            {
+                "id": "2",
+                "line": 6,
+                "message": "!!!heheheehehe var length must be longer",
+                "severity": "MAJOR"
+            },
+            {
+                "id": "3",
+                "line": 6,
+                "message": "!!!heheheehehe var length must be longer",
+                "severity": "MAJOR"
+            }
+         ]
+ *     }
+ * @apiError (401) InvalidToken 유효하지 않은 토큰(토큰이 없거나 깨졌을 때)
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 401 InvalidToken
+ *     {
+ *       "message": "InvalidToken"
+ *     }
+ * @apiError (404) ProjectNotFound 존재하지 않는 projectUid로 접근
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 ProjectNotFound
+ *     {
+ *       "message": "ProjectNotFound"
+ *     }
+ * @apiError (500) InternalServerError 서버에러
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 InternalServerError
+ *     {
+ *       "message": "InternalServerError"
+ *     }
+ *
+ */
 router.get('/issue', Ctrl.Response.get,
                      Ctrl.Auth.verify,
                      Ctrl.Issue.search);
