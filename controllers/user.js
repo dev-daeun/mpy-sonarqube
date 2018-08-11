@@ -25,7 +25,7 @@ async function create(ctx, next){
             ctx.state.createdUser = createdUser;
         }
         else await user.create(message);
-        ctx.response.body = {};
+        ctx.body = {};
         await next();
     }catch(err){
         console.log("create user error : ", err.message);
