@@ -1,15 +1,19 @@
 
 
-//postgreSQL에서 스캔결과 조회
 async function search(ctx, next){
     try{
 
         let message = {
             login: ctx.state.user,
             projectUid: ctx.request.query.projectUid
-        };
+        },
+            issues = await ctx.state.db.issue.find(message);
 
-        ctx.response.body = await ctx.state.db.issue.find(message);
+        if(issues.length===0)
+            ctx.throw(404, new Error('ProjectNotFound'));
+        else
+            ctx.response.body = issues.filter(x => x.id !== null);
+
         await next();
 
     }catch(err){

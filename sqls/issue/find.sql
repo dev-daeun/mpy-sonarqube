@@ -5,7 +5,7 @@ SELECT issues.Id,
        issues.message,
        issues.severity
 FROM   issues
-       JOIN projects
+       RIGHT OUTER JOIN projects
          ON issues.component_uuid = projects.uuid
-WHERE  issues.project_uuid = ${projectUid}
+WHERE  projects.project_uuid = ${projectUid}
 ORDER BY issues.Id DESC
