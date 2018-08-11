@@ -7,12 +7,12 @@ class ProjectRepository{
         this.pgp = pgp;
     }
 
-    findAllInBatch(params, t){
-        return t.query(sql.project.findAll, params);
+    findByKeeInBatch(params, t){
+        return t.query(sql.project.findByKee, params);
     }
 
-    async findAll(params){
-        return await this.db.any(sql.project.findAll, params);
+    async findByKee(params){
+        return await this.db.any(sql.project.findByKee, params);
     }
 
     findOneInBatch(params, t){

@@ -11,6 +11,7 @@ const initOptions = {
         obj.organization = new Repo.Organization(obj, pgp);
         obj.orgUser = new Repo.OrgUser(obj, pgp);
         obj.usertoken = new Repo.UserToken(obj, pgp);
+        obj.ruleProfile = new Repo.RuleProfile(obj, pgp);
     },
     error(err, e) {
         monitor.error(err, e);

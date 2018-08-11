@@ -4,5 +4,6 @@ module.exports = {
     Organization: require('./organization'),
     User: require('./user'),
     UserToken: require('./usertoken'),
-    OrgUser: require('./orgUser')
+    OrgUser: require('./orgUser'),
+    RuleProfile: require('./ruleProfile')
 };

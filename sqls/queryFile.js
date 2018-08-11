@@ -13,8 +13,8 @@ module.exports = {
         find: sql('issue/find.sql')
     },
     project: {
-        findAll: sql('project/findAll.sql'),
-        findOne: sql('project/findOne.sql')
+        findOne: sql('project/findOne.sql'),
+        findByKee: sql('project/findByKee.sql')
     },
     user: {
         find: sql('user/find.sql'),
@@ -30,5 +30,8 @@ module.exports = {
     },
     orgUser: {
         create: sql('orgUser/create.sql')
+    },
+    ruleProfile: {
+        find: sql('ruleProfile/find.sql')
     }
 };
