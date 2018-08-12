@@ -1,7 +1,8 @@
 const request = require('request-promise');
 const lang = require('../codes/language');
 const redisConfig = require('../configs/redis');
-
+const admin = require('../configs/admin');
+const rule = require('../codes/rule');
 async function create(ctx, next){
   try{
 
@@ -9,35 +10,33 @@ async function create(ctx, next){
           column: 'project_uuid',
           value: ctx.request.body.projectUid
       };
-      let project = await ctx.state.db.project.findOne(message),
-          projectName = project[0].kee,
-          profileKey;
+
 
       await ctx.state.redis.select(redisConfig.profileKeyDB);
-      profileKey = await ctx.state.redis.getAsync([ctx.state.user, projectName].join('-'));
+;
 
       await request({
           uri: 'http://localhost:9000/api/qualityprofiles/activate_rule',
           method: 'POST',
           auth: {
-              user: 'admin',
-              pass: 'admin'
+              user: admin.user,
+              pass: admin.pass
           },
           form: {
-              severity: ctx.request.body.severity,
-              profile_key: profileKey,
+              severity: rule.severity[ctx.request.body.severity],
+              profile_key: await ctx.state.redis.getAsync(ctx.state.project.kee),
               rule_key: lang.plugin[ctx.request.body.language]+':'+ ctx.state.customKey
           }
       });
 
-
-      ctx.state.project = project[0];
       await next();
 
   }catch(err){
-      ctx.throw(500, new Error('CreateRuleProfileError: '+err.message));
+      ctx.throw(err.status, err);
   }
 }
+
+
 
 async function search(ctx, next){
     try{
@@ -53,7 +52,7 @@ async function search(ctx, next){
 
         await next();
     }catch(err){
-        ctx.throw(500, new Error('SearchRuleProfileError: '+err.message));
+        ctx.throw(err.status, err);
     }
 
 }

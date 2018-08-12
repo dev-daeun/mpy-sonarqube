@@ -1,4 +1,6 @@
-const mapper = require('../codes/language');
+const lang = require('../codes/language');
+const rule = require('../codes/rule');
+const admin = require('../configs/admin');
 const request = require('request-promise');
 
 
@@ -17,6 +19,8 @@ function createParams(name, key, description, parameters){
 }
 
 
+
+
 /* 룰 등록 api */
 async function create(ctx, next){
     try{
@@ -28,16 +32,16 @@ async function create(ctx, next){
             uri: 'http://localhost:9000/api/rules/create',
             method: 'POST',
             auth: {
-                user: 'admin',
-                pass: 'admin'
+                user: admin.user,
+                pass: admin.pass
             },
             form: {
                 name: name,
                 markdown_description: description,
-                type: ctx.request.body.type,
-                severity: ctx.request.body.severity,
-                status: ctx.request.body.status,
-                template_key: mapper.templateKey[ctx.request.body.language],
+                type: rule.type[ctx.request.body.type],
+                severity: rule.severity[ctx.request.body.severity],
+                status: 'READY',
+                template_key: lang.templateKey[ctx.request.body.language],
                 custom_key: customKey,
                 prevent_reactivation: true,
                 params: createParams(name, customKey, description, ctx.request.body.parameters)
@@ -48,7 +52,7 @@ async function create(ctx, next){
         await next();
 
     }catch(err){
-        ctx.throw(500, new Error('CreateRuleError:' +err.message));
+        ctx.throw(err.status, err);
     }
 }
 

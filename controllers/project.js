@@ -21,7 +21,7 @@ async function searchByKee(ctx, next){
             return e;
         });
 
-        ctx.response.body.issues = issues;
+        ctx.body.issues = issues;
 
         await next();
 
@@ -30,7 +30,24 @@ async function searchByKee(ctx, next){
     }
 }
 
+async function searchByUid(ctx, next){
+    try{
+        let project = await ctx.state.db.project.findOne({
+            column: 'project_uuid',
+            value: ctx.request.body.projectUid
+        });
+
+        if(project.length===0)
+            ctx.throw(404, new Error('ProjectNotFound'));
+        else
+            ctx.state.project = project[0];
+        await next();
+    }catch(err){
+        ctx.throw(err.status, err);
+    }
+}
 
 module.exports = {
-    searchByKee
+    searchByKee,
+    searchByUid
 };

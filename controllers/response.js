@@ -1,6 +1,8 @@
 
 async function post(ctx, next){
 
+    ctx.body = {};
+
     await next();
 
     ctx.response.status = 201;
