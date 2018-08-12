@@ -25,10 +25,9 @@ async function create(ctx, next){
             ctx.state.createdUser = createdUser;
         }
         else await user.create(message);
-        ctx.body = {};
+
         await next();
     }catch(err){
-        console.log("create user error : ", err.message);
         ctx.throw(err.status, err);
     }
 }
@@ -46,7 +45,6 @@ async function searchByName(ctx, next){
             await next();
 
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 
@@ -65,7 +63,6 @@ async function searchByEmail(ctx, next){
             await next();
 
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 

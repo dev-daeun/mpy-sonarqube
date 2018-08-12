@@ -12,7 +12,7 @@ async function search(ctx, next){
         if(issues.length===0)
             ctx.throw(404, new Error('ProjectNotFound'));
         else
-            ctx.response.body = issues.filter(x => x.id !== null);
+            ctx.body = issues.filter(x => x.id !== null);
 
         await next();
 

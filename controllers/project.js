@@ -7,7 +7,7 @@ async function searchByKee(ctx, next){
         },
             project = await ctx.state.db.project.findOne(message);
 
-        ctx.response.body = {
+        ctx.body = {
             projectUid: project[0].project_uuid
         };
 

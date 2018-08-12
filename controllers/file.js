@@ -18,7 +18,6 @@ async function scan(ctx, next){
        await next();
 
    }catch(err){
-       console.log(err.message);
        ctx.throw(err.status, err);
    }
 }

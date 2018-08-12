@@ -23,7 +23,6 @@ async function create(ctx, next){
         await next();
 
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 
@@ -40,7 +39,6 @@ async function search(ctx, next){
         await next();
 
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 }
@@ -49,5 +47,4 @@ async function search(ctx, next){
 module.exports = {
     create,
     search
-
-}
+};

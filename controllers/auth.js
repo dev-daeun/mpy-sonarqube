@@ -17,12 +17,11 @@ async function sign(ctx, next){
             ctx.throw (401, new Error('AuthenticationFailed'));
 
         let token = await jwt.sign(ctx.request.body.username);
-        ctx.response.body = {
+        ctx.body = {
             token: token
         };
         await next();
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 
@@ -44,7 +43,6 @@ async function verify(ctx, next){
         }
 
     }catch(err){
-        console.log(err.message);
         ctx.throw(err.status, err);
     }
 }

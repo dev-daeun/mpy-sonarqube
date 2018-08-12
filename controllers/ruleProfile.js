@@ -3,17 +3,12 @@ const lang = require('../codes/language');
 const redisConfig = require('../configs/redis');
 const admin = require('../configs/admin');
 const rule = require('../codes/rule');
+
+
 async function create(ctx, next){
   try{
 
-      let message = {
-          column: 'project_uuid',
-          value: ctx.request.body.projectUid
-      };
-
-
       await ctx.state.redis.select(redisConfig.profileKeyDB);
-;
 
       await request({
           uri: 'http://localhost:9000/api/qualityprofiles/activate_rule',
