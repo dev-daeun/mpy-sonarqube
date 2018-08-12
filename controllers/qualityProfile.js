@@ -27,7 +27,7 @@ async function create(ctx, next){
             },
             form: {
                 filename: null,
-                name: ctx.state.project.kee.kee,
+                name: ctx.state.project.kee,
                 language: ctx.request.body.language
             }
         });
